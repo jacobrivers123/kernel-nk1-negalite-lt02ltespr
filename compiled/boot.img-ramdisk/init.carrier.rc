@@ -1,0 +1,146 @@
+# Copyright (c) 2009-2012, Code Aurora Forum. All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#     * Redistributions of source code must retain the above copyright
+#       notice, this list of conditions and the following disclaimer.
+#     * Redistributions in binary form must reproduce the above copyright
+#       notice, this list of conditions and the following disclaimer in the
+#       documentation and/or other materials provided with the distribution.
+#     * Neither the name of Code Aurora nor
+#       the names of its contributors may be used to endorse or promote
+#       products derived from this software without specific prior written
+#       permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NON-INFRINGEMENT ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+# EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+on init
+
+
+
+on early-boot
+    chown bluetooth net_bt_stack /dev/ttyHS0
+    chmod 0660 /dev/ttyHS0
+
+on boot
+    chown system system /sys/class/leds/button-backlight/brightness
+
+# permissions for bluetooth.
+    setprop ro.bt.bdaddr_path "/efs/bluetooth/bt_addr"
+    chown bluetooth net_bt_stack ro.bt.bdaddr_path
+    chmod 0660 /sys/class/rfkill/rfkill0/state
+    chown bluetooth net_bt_stack /sys/class/rfkill/rfkill0/state
+    chown bluetooth net_bt_stack /sys/class/rfkill/rfkill0/type
+
+# bluetooth LPM
+    chmod 0220 /proc/bluetooth/sleep/lpm
+    chmod 0220 /proc/bluetooth/sleep/btwrite
+    chown bluetooth net_bt_stack /proc/bluetooth/sleep/lpm
+    chown bluetooth net_bt_stack /proc/bluetooth/sleep/btwrite
+
+# Permissions for silent crash service
+	
+	
+	chown system system /dev/ramdump_modem_fw
+	chown system system /dev/ramdump_modem_sw
+	chown system system /dev/ramdump_smem-modem	
+	chown system system /dev/ramdump_kernel_log
+
+	
+	
+	chmod 0600 /dev/ramdump_modem_fw
+	chmod 0600 /dev/ramdump_modem_sw
+	chmod 0600 /dev/ramdump_smem-modem
+# Magnetic sensor
+	chown compass input /sys/class/input/input3/offsets
+    chown compass input /sys/class/input/input3/dynamic_matrix
+    chown system input /sys/class/input/input3/threshold
+    chown system input /sys/class/input/input3/distortion
+    chown system input /sys/class/input/input3/shape
+	write /sys/class/input/input3/distortion "400 50 15"
+
+# Broadcom NFC
+    chmod 0600 /dev/bcm2079x
+    chown nfc nfc /dev/bcm2079x
+    mkdir /data/bcmnfc
+    mkdir /data/bcmnfc/param
+    chmod 0700 /data/bcmnfc
+    chmod 0700 /data/bcmnfc/param
+    chown nfc nfc /data/bcmnfc
+    chown nfc nfc /data/bcmnfc/param
+
+#wifi chnages
+service ftm_ptt /system/bin/ftm_ptt -d
+    user root
+    group radio system
+    disabled
+
+# Kickstart the Wireless subsystem
+    write /dev/wcnss_wlan 1
+
+# for SPRINT/VMU/CRI Chameleon feature #
+on init
+    mkdir /carrier 0771 system system
+
+on fs
+    wait /dev/block/platform/msm_sdcc.1/by-name/carrier
+    mount ext4 /dev/block/platform/msm_sdcc.1/by-name/carrier /carrier nosuid nodev barrier=1
+    chown system system /carrier
+    chmod 0771 /carrier
+	# We restorecon /carrier in case the carrier partition has been reset.
+    restorecon -R /carrier
+	
+    wait /dev/block/platform/msm_sdcc.1/by-name/modem
+    mount vfat /dev/block/platform/msm_sdcc.1/by-name/modem /firmware ro shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337
+
+# End of Chameleon #
+
+  #For Absolute Persistence Partition 
+       
+    mkdir /persdata 0755 system system 
+    mkdir /persdata/absolute 0750 system system 
+  
+    wait /dev/block/platform/msm_sdcc.1/by-name/persdata 
+    check_fs /dev/block/platform/msm_sdcc.1/by-name/persdata ext4 
+    mount ext4 /dev/block/platform/msm_sdcc.1/by-name/persdata /persdata/absolute nosuid nodev barrier=1 
+      
+    chown system system /persdata 
+    chmod 0755 /persdata 
+    chown system system /persdata/absolute 
+    chmod 0750 /persdata/absolute
+
+on property:persist.sys.storage_preload=1
+    wait /dev/block/platform/msm_sdcc.1/by-name/hidden
+    check_fs /dev/block/platform/msm_sdcc.1/by-name/hidden ext4
+    mount ext4 /dev/block/platform/msm_sdcc.1/by-name/hidden /preload nosuid nodev noatime wait ro
+    setprop storage.preload.complete 1
+
+on property:persist.sys.storage_preload=0
+    exec /system/bin/umount /preload
+    
+#InsideSecure VPN Client
+service vpnclientpm /system/bin/vpnclientpm -u 1000 -g 1000 \
+     -O /data/data/com.ipsec.service/vpnclientpm.txt \
+     -U rmnet,rmnet_usb,wlan,bt-pan,rndis,p2p,eth
+      socket vpnclientpm seqpacket 0600 system system
+      disabled
+on property:service.vpnclientpm.enable=1
+      start vpnclientpm
+on property:service.vpnclientpm.enable=0
+      stop vpnclientpm
+	  
+service mobex-daemon /system/bin/npsmobex
+    class main
+    user system
+    group system radio inet sdcard_r sdcard_rw media_rw shell
+
