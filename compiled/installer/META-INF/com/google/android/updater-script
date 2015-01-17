@@ -95,7 +95,7 @@ ui_print("@Unmounting /system");
 unmount("/system");
 ui_print("Done");
 set_progress(1.0);
-ui_print(" ");
-ui_print("@Rebooting...");
-run_program("/tmp/reboot.sh");
+#ui_print(" ");
+#ui_print("@Rebooting...");
+#run_program("/tmp/reboot.sh");
 
