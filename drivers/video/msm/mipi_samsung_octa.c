@@ -700,12 +700,12 @@ static void mipi_samsung_disp_backlight(struct msm_fb_data_type *mfd)
 	if (mfd->resume_state == MIPI_RESUME_STATE) {		
 		if (msd.mpd->backlight_control(mfd->bl_level)) {
 			mipi_samsung_disp_send_cmd(mfd, PANEL_BRIGHT_CTRL, true);
-			pr_info("mipi_samsung_disp_backlight %d\n", mfd->bl_level);
+			//pr_info("mipi_samsung_disp_backlight %d\n", mfd->bl_level);
 		}
 		msd.mpd->first_bl_hbm_psre = 0;
 	} else {
 		msd.mpd->first_bl_hbm_psre = 0;
-		pr_info("%s : panel is off state!!\n", __func__);
+		//pr_info("%s : panel is off state!!\n", __func__);
 	}
 	
 	mutex_unlock(&brightness_mutex);
@@ -759,7 +759,7 @@ static ssize_t mipi_samsung_disp_get_power(struct device *dev,
 	if (unlikely(mfd->key != MFD_KEY))
 		return -EINVAL;
 
-	rc = snprintf((char *)buf, sizeof(buf), "%d\n", mfd->panel_power_on);
+	rc = sprintf(buf, "%d\n", mfd->panel_power_on);
 	pr_info("mipi_samsung_disp_get_power(%d)\n", mfd->panel_power_on);
 
 	return rc;
@@ -824,7 +824,7 @@ static ssize_t mipi_samsung_auto_brightness_show(struct device *dev,
 {
 	int rc;
 
-	rc = snprintf((char *)buf, sizeof(buf), "%d\n",
+	rc = sprintf(buf, "%d\n",
 			msd.dstat.auto_brightness);
 	pr_info("auot_brightness: %d\n", *buf);
 
@@ -916,7 +916,7 @@ static ssize_t mipi_samsung_disp_acl_show(struct device *dev,
 {
 	int rc;
 
-	rc = snprintf((char *)buf, sizeof(buf), "%d\n", msd.mpd->acl_status);
+	rc = sprintf(buf, "%d\n", msd.mpd->acl_status);
 	pr_info("acl status: %d\n", *buf);
 
 	return rc;
@@ -956,7 +956,7 @@ static ssize_t mipi_samsung_disp_siop_show(struct device *dev,
 {
 	int rc;
 
-	rc = snprintf((char *)buf, sizeof(buf), "%d\n", msd.mpd->siop_status);
+	rc = sprintf(buf, "%d\n", msd.mpd->siop_status);
 	pr_info("siop status: %d\n", *buf);
 
 	return rc;
@@ -1075,7 +1075,7 @@ static ssize_t mipi_samsung_disp_backlight_show(struct device *dev,
 	struct msm_fb_data_type *mfd;
 	mfd = platform_get_drvdata(msd.msm_pdev);
 
-	rc = snprintf((char *)buf, sizeof(buf), "%d\n", mfd->bl_level);
+	rc = sprintf(buf, "%d\n", mfd->bl_level);
 
 	return rc;
 }
