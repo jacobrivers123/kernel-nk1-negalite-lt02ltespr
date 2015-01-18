@@ -32,12 +32,12 @@
 
 #include <trace/events/power.h>
 
-
 #ifdef CONFIG_ARM_AUTO_HOTPLUG
 static unsigned int Lenable_auto_hotplug = 0;
 extern void set_max_gpuclk_so(unsigned long val);
 extern void apenable_auto_hotplug(bool state);
 #endif
+
 /**
  * The "cpufreq driver" - the arch- or hardware-dependent low
  * level driver of CPUFreq support, and its spinlock. This lock
@@ -897,7 +897,6 @@ static int cpufreq_add_dev_policy(unsigned int cpu,
 
 			spin_lock_irqsave(&cpufreq_driver_lock, flags);
 			cpumask_copy(managed_policy->cpus, policy->cpus);
-			cpumask_and(managed_policy->cpus, managed_policy->cpus, cpu_online_mask);
 			per_cpu(cpufreq_cpu_data, cpu) = managed_policy;
 			spin_unlock_irqrestore(&cpufreq_driver_lock, flags);
 
@@ -2120,6 +2119,7 @@ EXPORT_SYMBOL_GPL(cpufreq_unregister_driver);
 static int __init cpufreq_core_init(void)
 {
 	int cpu;
+
 #ifdef CONFIG_CPU_VOLTAGE_TABLE
 	int rc;
 #endif	/* CONFIG_CPU_VOLTAGE_TABLE */
@@ -2135,6 +2135,7 @@ static int __init cpufreq_core_init(void)
 	cpufreq_global_kobject = kobject_create_and_add("cpufreq", &cpu_subsys.dev_root->kobj);
 	BUG_ON(!cpufreq_global_kobject);
 	register_syscore_ops(&cpufreq_syscore_ops);
+
 #ifdef CONFIG_CPU_VOLTAGE_TABLE
 	rc = sysfs_create_group(cpufreq_global_kobject, &vddtbl_attr_group);
 #endif	/* CONFIG_CPU_VOLTAGE_TABLE */

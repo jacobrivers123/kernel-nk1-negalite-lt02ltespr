@@ -4,7 +4,7 @@
 SELINUX="Off"
 
 # Sleep Control
-SCREEN_OFF="On"
+SCREEN_OFF="Off"
 
 # CPU Settings ( If CPU_CONTROL is set to "On" )
 CPU_AWAKE_MAX="1944000"
@@ -68,6 +68,11 @@ SCHEDULER="row"
 ###########################################
 
 echo "Running Post-Init Script"
+
+#fastrpc permission setting
+insmod /system/lib/modules/adsprpc.ko
+chown -h system.system /dev/adsprpc-smd
+chmod -h 666 /dev/adsprpc-smd
 
 # SELinux Control
 if [ $SELINUX = "On" ]; then
