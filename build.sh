@@ -102,7 +102,7 @@ echo " "
 
 export ARCH=arm
 
-make VARIANT_DEFCONFIG=negalite_spr_defconfig negalite_defconfig SELINUX_DEFCONFIG=selinux_defconfig SELINUX_LOG_DEFCONFIG=selinux_defconfig
+make VARIANT_DEFCONFIG=negalite_spr_defconfig negalite_defconfig DEBUG_DEFCONFIG=negalite_debug_defconfig SELINUX_DEFCONFIG=selinux_defconfig SELINUX_LOG_DEFCONFIG=selinux_log_defconfig
 
 echo " "
 echo "**************************************************************"
