@@ -12,6 +12,12 @@ INSTALLER=$PARENT/compiled/installer
 chmod 755 $PARENT/scripts/gcc-wrapper.py
 
 echo " "
+export USE_CCACHE=1
+export CCACHE_DIR=/usr/arm-cortex_a15-linux-gnueabihf-linaro_4.9.3/bin-ccache
+export PATH=/usr/arm-cortex_a15-linux-gnueabihf-linaro_4.9.3/bin-ccache:/usr/arm-cortex_a15-linux-gnueabihf-linaro_4.9.3/bin:$PATH
+ccache -M 25G
+
+echo " "
 echo "**************************************************************"
 echo "**************************************************************"
 echo "                Cleaning Up Old Install Files                 "
@@ -102,7 +108,7 @@ echo " "
 
 export ARCH=arm
 
-make VARIANT_DEFCONFIG=negalite_spr_defconfig negalite_defconfig DEBUG_DEFCONFIG=negalite_debug_defconfig SELINUX_DEFCONFIG=selinux_defconfig SELINUX_LOG_DEFCONFIG=selinux_log_defconfig
+make VARIANT_DEFCONFIG=negalite_spr_defconfig nega_defconfig DEBUG_DEFCONFIG=negalite_debug_defconfig SELINUX_DEFCONFIG=selinux_defconfig SELINUX_LOG_DEFCONFIG=selinux_log_defconfig
 
 echo " "
 echo "**************************************************************"

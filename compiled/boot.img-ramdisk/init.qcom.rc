@@ -638,8 +638,6 @@ service wifi-crda /system/bin/sh /system/etc/init.crda.sh
 
 on property:sys.boot_completed=1
     start qcom-post-boot
-    # disable led once boot is complete
-    write /sys/class/sec/led/led_pattern 0
 
 service atfwd /system/bin/ATFWD-daemon
     class late_start

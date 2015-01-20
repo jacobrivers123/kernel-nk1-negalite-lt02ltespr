@@ -1,0 +1,1 @@
+CROSS_COMPILE=/usr/arm-cortex_a15-linux-gnueabihf-linaro_4.7.4/bin/arm-cortex_a15-linux-gnueabihf- ARCH=arm make -C ~/kernel-nk1 M=$PWD CONFIG_PRIMA_WLAN=m CONFIG_PRIMA_WLAN_LFR=y KERNEL_BUILD=1 WLAN_ROOT=$PWD
