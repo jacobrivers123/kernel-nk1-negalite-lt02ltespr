@@ -205,6 +205,14 @@ on post-fs
     # ko files for exfat
     insmod /system/lib/modules/exfat_core.ko
     insmod /system/lib/modules/exfat_fs.ko
+    
+    #ko files for prima wlan
+	insmod /system/lib/modules/wlan.ko
+	
+	#fastrpc permission setting
+	insmod /system/lib/modules/adsprpc.ko
+	chown -h system.system /dev/adsprpc-smd
+	chmod -h 666 /dev/adsprpc-smd
 
 on post-fs-data
     # Reload SE Android Policy
@@ -563,12 +571,6 @@ on boot
     chown system system /sys/class/leds/red/device/grpfreq
     chown system system /sys/class/leds/red/device/grppwm
     chown system system /sys/class/leds/red/device/blink
-    chown system system /sys/class/leds/red/brightness
-    chown system system /sys/class/leds/green/brightness
-    chown system system /sys/class/leds/blue/brightness
-    chown system system /sys/class/leds/red/device/grpfreq
-    chown system system /sys/class/leds/red/device/grppwm
-    chown system system /sys/class/leds/red/device/blink
     chown system system /sys/class/timed_output/vibrator/enable
     chown system system /sys/module/sco/parameters/disable_esco
     chown system system /sys/kernel/ipv4/tcp_wmem_min
@@ -624,13 +626,6 @@ on boot
 #Essential node for usbservice
     mkdir /dev/bus/ 755 root root
     mkdir /dev/bus/usb 755 root root
-   # Permissions for Led
-   chown system system /sys/class/sec/led/led_r
-   chown system system /sys/class/sec/led/led_g
-   chown system system /sys/class/sec/led/led_b
-   chown system system /sys/class/sec/led/led_pattern
-   chown system system /sys/class/sec/led/led_blink
-   chown system system /sys/class/sec/led/led_lowpower
 
 # <Sensors & NFC>
 # Accelerometer_sensor
@@ -1170,7 +1165,6 @@ service post-init /sbin/ext/post-init.sh
     class core
     user root
     oneshot
-    
 
 #KNOX - SE Android Security Setting Level
 service freshsebool /system/bin/freshsebool

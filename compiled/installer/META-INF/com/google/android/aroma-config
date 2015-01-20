@@ -72,9 +72,9 @@ selectbox(
 	"icons/performance",
 	"performance.prop",
 
-	"Low Performance","Good Performance - 1.89GHz",0,
-	"Mixed Performance","Better Performance - 1.94GHz",1,
-	"High Performance","Best Performance - 2.1GHz",0
+	"Low Performance","Good Performance",0,
+	"Mixed Performance","Better Performance",1,
+	"High Performance","Best Performance",0
 );
 
 ###############################

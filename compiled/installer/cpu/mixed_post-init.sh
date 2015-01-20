@@ -69,11 +69,6 @@ SCHEDULER="row"
 
 echo "Running Post-Init Script"
 
-#fastrpc permission setting
-insmod /system/lib/modules/adsprpc.ko
-chown -h system.system /dev/adsprpc-smd
-chmod -h 666 /dev/adsprpc-smd
-
 # SELinux Control
 if [ $SELINUX = "On" ]; then
 	echo "1" > /sys/fs/selinux/enforce
