@@ -206,6 +206,16 @@ static struct acpu_level tbl_PVS2_1700MHz[] __initdata = {
 };
 
 static struct acpu_level tbl_PVS3_1700MHz[] __initdata = {
+#ifdef CONFIG_LOW_CPUCLOCKS
+	{ 1, {    81000, HFPLL, 2, 0x08 }, L2(0),   900000 },
+	{ 1, {   135000, HFPLL, 2, 0x0A }, L2(0),   912500 },
+	{ 1, {   162000, HFPLL, 2, 0x0C }, L2(0),   912500 },
+	{ 1, {   189000, HFPLL, 2, 0x0E }, L2(0),   925000 },
+	{ 1, {   216000, HFPLL, 2, 0x10 }, L2(0),   925000 },
+	{ 1, {   270000, HFPLL, 2, 0x14 }, L2(0),   950000 },
+	{ 1, {   324000, HFPLL, 2, 0x18 }, L2(0),   950000 },
+	{ 1, {   378000, PLL_8, 0, 0x00 }, L2(0),   950000 },
+#endif
 	{ 1, {   384000, HFPLL, 1, 0x0E }, L2(5),   962500 },
 	{ 1, {   432000, HFPLL, 1, 0x10 }, L2(5),   962500 },
 	{ 1, {   486000, HFPLL, 1, 0x12 }, L2(5),   962500 },
@@ -308,7 +318,11 @@ static struct acpuclk_krait_params acpuclk_8930ab_params __initdata = {
 	.l2_freq_tbl_size = sizeof(l2_freq_tbl),
 	.bus_scale = &bus_scale_data,
 	.pte_efuse_phys = 0x007000C0,
+#ifdef CONFIG_LOW_CPUCLOCKS
+	.stby_khz = 378000,
+#else	
 	.stby_khz = 384000,
+#endif
 };
 
 static int __init acpuclk_8930ab_probe(struct platform_device *pdev)
