@@ -999,6 +999,11 @@ static struct dcvs_core *msm_dcvs_get_core(int offset)
 	return &core_list[offset];
 }
 
+void reset_num_cpu_freqs(void)
+{
+  num_cpu_freqs  = 0;
+}
+
 void msm_dcvs_register_cpu_freq(uint32_t freq, uint32_t voltage)
 {
 	BUG_ON(freq == 0 || voltage == 0 ||
