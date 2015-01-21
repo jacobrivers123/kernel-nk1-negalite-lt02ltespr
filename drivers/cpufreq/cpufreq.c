@@ -32,6 +32,8 @@
 
 #include <trace/events/power.h>
 
+extern ssize_t get_gpu_vdd_levels_str(char *buf);
+extern void set_gpu_vdd_levels(int uv_tbl[]);
 #ifdef CONFIG_ARM_AUTO_HOTPLUG
 static unsigned int Lenable_auto_hotplug = 0;
 extern void set_max_gpuclk_so(unsigned long val);
@@ -450,6 +452,21 @@ static ssize_t store_##file_name					\
 store_one(scaling_min_freq, min);
 store_one(scaling_max_freq, max);
 
+ssize_t show_GPU_mV_table(struct cpufreq_policy *policy, char *buf)
+{
+	int modu = 0;
+	return get_gpu_vdd_levels_str(buf);
+}
+
+ssize_t store_GPU_mV_table(struct cpufreq_policy *policy, const char *buf, size_t count)
+{
+	unsigned int ret = -EINVAL;
+	unsigned int u[3];
+	ret = sscanf(buf, "%d %d %d", &u[0], &u[1], &u[2]);
+	set_gpu_vdd_levels(u);
+	return count;
+}
+
 /**
  * show_cpuinfo_cur_freq - current CPU frequency as detected by hardware
  */
@@ -719,6 +736,7 @@ cpufreq_freq_attr_rw(scaling_min_freq);
 cpufreq_freq_attr_rw(scaling_max_freq);
 cpufreq_freq_attr_rw(scaling_governor);
 cpufreq_freq_attr_rw(scaling_setspeed);
+cpufreq_freq_attr_rw(GPU_mV_table);
 
 #ifdef CONFIG_ARM_AUTO_HOTPLUG
 cpufreq_freq_attr_rw(enable_auto_hotplug);
@@ -741,6 +759,7 @@ static struct attribute *default_attrs[] = {
 	&scaling_driver.attr,
 	&scaling_available_governors.attr,
 	&scaling_setspeed.attr,
+	&GPU_mV_table.attr,
 
 #ifdef CONFIG_ARM_AUTO_HOTPLUG
 	&enable_auto_hotplug.attr,
