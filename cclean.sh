@@ -5,6 +5,12 @@ export INITRAMFS=$PARENT/compiled
 export INSTALLER=$PARENT/compiled/installer
 
 echo " "
+export USE_CCACHE=1
+export CCACHE_DIR=/usr/arm-cortex_a15-linux-gnueabihf-linaro_4.9.3/bin-ccache
+export PATH=/usr/arm-cortex_a15-linux-gnueabihf-linaro_4.9.3/bin-ccache:/usr/arm-cortex_a15-linux-gnueabihf-linaro_4.9.3/bin:$PATH
+ccache -M 25G
+
+echo " "
 echo "**************************************************************"
 echo "**************************************************************"
 echo "                Cleaning Up Old Install Files                 "
