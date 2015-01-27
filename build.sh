@@ -41,18 +41,13 @@ if [ -e $INSTALLER/kernel/boot.img ]; then
 	echo "  CLEAN   boot.img"
 	rm $INSTALLER/kernel/boot.img
 fi;
-
+if [ -e $INSTALLER/system/lib/modules/adsprpc.ko ]; then
+	echo "  CLEAN   adsprpc.ko"
+	rm $INSTALLER/system/lib/modules/adsprpc.ko
+fi;
 if [ -e $INSTALLER/system/lib/modules/ansi_cprng.ko ]; then
 	echo "  CLEAN   ansi_cprng.ko"
 	rm $INSTALLER/system/lib/modules/ansi_cprng.ko
-fi;
-if [ -e $INSTALLER/system/lib/modules/cifs.ko ]; then
-	echo "  CLEAN   cifs.ko"
-	rm $INSTALLER/system/lib/modules/cifs.ko
-fi;
-if [ -e $INSTALLER/system/lib/modules/dhd.ko ]; then
-	echo "  CLEAN   dhd.ko"
-	rm $INSTALLER/system/lib/modules/dhd.ko
 fi;
 if [ -e $INSTALLER/system/lib/modules/exfat_fs.ko ]; then
 	echo "  CLEAN   exfat_fs.ko"
@@ -70,13 +65,25 @@ if [ -e $INSTALLER/system/lib/modules/gspca_main.ko ]; then
 	echo "  CLEAN   gspca_main.ko"
 	rm $INSTALLER/system/lib/modules/gspca_main.ko
 fi;
-if [ -e $INSTALLER/system/lib/modules/ntfs.ko ]; then
-	echo "  CLEAN   ntfs.ko"
-	rm $INSTALLER/system/lib/modules/ntfs.ko
+if [ -e $INSTALLER/system/lib/modules/mcdrvmodule.ko ]; then
+	echo "  CLEAN   mcdrvmodule.ko"
+	rm $INSTALLER/system/lib/modules/mcdrvmodule.ko
 fi;
-if [ -e $INSTALLER/system/lib/modules/ppp_async.ko ]; then
-	echo "  CLEAN   ppp_async.ko"
-	rm $INSTALLER/system/lib/modules/ppp_async.ko
+if [ -e $INSTALLER/system/lib/modules/mckernelapi.ko ]; then
+	echo "  CLEAN   mckernelapi.ko"
+	rm $INSTALLER/system/lib/modules/mckernelapi.ko
+fi;
+if [ -e $INSTALLER/system/lib/modules/qce40.ko ]; then
+	echo "  CLEAN   qce40.ko"
+	rm $INSTALLER/system/lib/modules/qce40.ko
+fi;
+if [ -e $INSTALLER/system/lib/modules/qcrypto.ko ]; then
+	echo "  CLEAN   qcrypto.ko"
+	rm $INSTALLER/system/lib/modules/qcrypto.ko
+fi;
+if [ -e $INSTALLER/system/lib/modules/radio-iris-transport.ko ]; then
+	echo "  CLEAN   radio-iris-transport.ko"
+	rm $INSTALLER/system/lib/modules/radio-iris-transport.ko
 fi;
 if [ -e $INSTALLER/system/lib/modules/reset_modem.ko ]; then
 	echo "  CLEAN   reset_modem.ko"
@@ -85,6 +92,18 @@ fi;
 if [ -e $INSTALLER/system/lib/modules/scsi_wait_scan.ko ]; then
 	echo "  CLEAN   scsi_wait_scan.ko"
 	rm $INSTALLER/system/lib/modules/scsi_wait_scan.ko
+fi;
+if [ -e $INSTALLER/system/lib/modules/prima/prima_wlan.ko ]; then
+	echo "  CLEAN   prima_wlan.ko"
+	rm $INSTALLER/system/lib/modules/prima/prima_wlan.ko
+fi;
+if [ -e $INSTALLER/system/etc/firmware/wlan/prima/WCNSS_qcom_cfg.ini ]; then
+	echo "  CLEAN   WCNSS_qcom_cfg.ini"
+	rm $INSTALLER/system/etc/firmware/wlan/prima/WCNSS_qcom_cfg.ini
+fi;
+if [ -e $INSTALLER/system/etc/firmware/wlan/prima/WCNSS_cfg.dat ]; then
+	echo "  CLEAN   WCNSS_cfg.dat"
+	rm $INSTALLER/system/etc/firmware/wlan/prima/WCNSS_cfg.dat
 fi;
 
 echo " "
@@ -106,6 +125,7 @@ echo "**************************************************************"
 echo "**************************************************************"
 echo " "
 
+export CROSS_COMPILE=/usr/arm-cortex_a15-linux-gnueabihf-linaro_4.9.3/bin-ccache/arm-cortex_a15-linux-gnueabihf-
 export ARCH=arm
 
 make VARIANT_DEFCONFIG=negalite_spr_defconfig nega_defconfig DEBUG_DEFCONFIG=negalite_debug_defconfig SELINUX_DEFCONFIG=selinux_defconfig SELINUX_LOG_DEFCONFIG=selinux_log_defconfig
@@ -165,8 +185,12 @@ function compile(){
 		echo " "
 		
 		cp $PARENT/arch/arm/boot/zImage $PARENT/compiled/zImage
-		cp -a `find -name \*.ko ! -name \*dev.ko ! -name \*test.ko ! -name \*bug.ko ! -name \*iosched.ko` $PARENT/compiled/installer/system/lib/modules/
+		cp -a `find -name \*.ko ! -name \*dev.ko ! -name \*test.ko ! -name \*bug.ko ! -name \*iosched.ko ! -name \*wlan.ko` $PARENT/compiled/installer/system/lib/modules/
 
+		#Adding Prima Wlan Module To Lib Folder
+		cp $PARENT/drivers/staging/prima/wlan.ko $INSTALLER/system/lib/modules/prima/prima_wlan.ko
+		cp $PARENT/drivers/staging/prima/firmware_bin/WCNSS_qcom_cfg.ini $INSTALLER/system/etc/firmware/wlan/prima/WCNSS_qcom_cfg.ini
+		cp $PARENT/drivers/staging/prima/firmware_bin/WCNSS_cfg.dat $INSTALLER/system/etc/firmware/wlan/prima/WCNSS_cfg.dat
 		
 		echo " "
 		echo "**************************************************************"

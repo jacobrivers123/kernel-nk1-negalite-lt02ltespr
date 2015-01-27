@@ -17,7 +17,6 @@
 #include <mach/rpm-regulator.h>
 #include <mach/msm_bus_board.h>
 #include <mach/msm_bus.h>
-#include <linux/cpufreq.h>
 
 #include <linux/acpuclock-defines.h>
 
@@ -217,45 +216,45 @@ static struct acpu_level tbl_PVS2_1700MHz[] __initdata = {
 
 static struct acpu_level tbl_PVS3_1700MHz[] __initdata = {
 #ifdef CONFIG_LOW_CPUCLOCKS
-	{ 1, {    81000, HFPLL, 2, 0x08 }, L2(14),   862500 },
-	{ 1, {   135000, HFPLL, 2, 0x0A }, L2(14),   875000 },
-	{ 1, {   162000, HFPLL, 2, 0x0C }, L2(14),   887500 },
-	{ 1, {   189000, HFPLL, 2, 0x0E }, L2(15),   900000 },
-	{ 1, {   216000, HFPLL, 2, 0x10 }, L2(15),   912500 },
-	{ 1, {   270000, HFPLL, 2, 0x14 }, L2(15),   925000 },
-	{ 1, {   324000, HFPLL, 2, 0x18 }, L2(15),   937500 },
-	{ 1, {   378000, HFPLL, 2, 0x1A }, L2(15),   950000 },
+	{ 1, {    81000, HFPLL, 2, 0x08 }, L2(3),   862500 },
+	{ 1, {   135000, HFPLL, 2, 0x0A }, L2(3),   875000 },
+	{ 1, {   162000, HFPLL, 2, 0x0C }, L2(3),   887500 },
+	{ 1, {   189000, HFPLL, 2, 0x0E }, L2(3),   900000 },
+	{ 1, {   216000, HFPLL, 2, 0x10 }, L2(8),   912500 },
+	{ 1, {   270000, HFPLL, 2, 0x14 }, L2(8),   925000 },
+	{ 1, {   324000, HFPLL, 2, 0x18 }, L2(8),   937500 },
+	{ 1, {   378000, HFPLL, 2, 0x1A }, L2(8),   950000 },
 #endif
-	{ 1, {   384000, HFPLL, 1, 0x0E }, L2(15),   962500 },
-	{ 1, {   432000, HFPLL, 1, 0x10 }, L2(15),   975000 },
-	{ 1, {   486000, HFPLL, 1, 0x12 }, L2(15),   987500 },
-	{ 1, {   540000, HFPLL, 1, 0x14 }, L2(17),  1000000 },
-	{ 1, {   594000, HFPLL, 1, 0x16 }, L2(17),  1012500 },
-	{ 1, {   648000, HFPLL, 1, 0x18 }, L2(17),  1025000 },
-	{ 1, {   702000, HFPLL, 1, 0x1A }, L2(17),  1037500 },
-	{ 1, {   756000, HFPLL, 1, 0x1C }, L2(17),  1050000 },
-	{ 1, {   810000, HFPLL, 1, 0x1E }, L2(17),  1062500 },
-	{ 1, {   864000, HFPLL, 1, 0x20 }, L2(17),  1075000 },
-	{ 1, {   918000, HFPLL, 1, 0x22 }, L2(17),  1087500 },
-	{ 1, {   972000, HFPLL, 1, 0x24 }, L2(18),  1100000 },
-	{ 1, {  1026000, HFPLL, 1, 0x26 }, L2(18),  1112500 },
-	{ 1, {  1080000, HFPLL, 1, 0x28 }, L2(18),  1125000 },
-	{ 1, {  1134000, HFPLL, 1, 0x2A }, L2(18), 1137500 },
-	{ 1, {  1188000, HFPLL, 1, 0x2C }, L2(18), 1150000 },
-	{ 1, {  1242000, HFPLL, 1, 0x2E }, L2(18), 1162500 },
-	{ 1, {  1296000, HFPLL, 1, 0x30 }, L2(18), 1175000 },
-	{ 1, {  1350000, HFPLL, 1, 0x32 }, L2(18), 1187500 },
-	{ 1, {  1404000, HFPLL, 1, 0x34 }, L2(19), 1200000 },	
-	{ 1, {  1458000, HFPLL, 1, 0x36 }, L2(19), 1212500 },
-	{ 1, {  1512000, HFPLL, 1, 0x38 }, L2(19), 1225000 },	
-	{ 1, {  1566000, HFPLL, 1, 0x3A }, L2(19), 1237500 },
-	{ 1, {  1620000, HFPLL, 1, 0x3C }, L2(19), 1250000 },
-	{ 1, {  1674000, HFPLL, 1, 0x3E }, L2(19), 1262500 },
-	{ 1, {  1728000, HFPLL, 1, 0x40 }, L2(19), 1275000 },
+	{ 1, {   384000, HFPLL, 1, 0x0E }, L2(7),   962500 },
+	{ 1, {   432000, HFPLL, 1, 0x10 }, L2(7),   975000 },
+	{ 1, {   486000, HFPLL, 1, 0x12 }, L2(7),   987500 },
+	{ 1, {   540000, HFPLL, 1, 0x14 }, L2(7),  1000000 },
+	{ 1, {   594000, HFPLL, 1, 0x16 }, L2(7),  1012500 },
+	{ 1, {   648000, HFPLL, 1, 0x18 }, L2(7),  1025000 },
+	{ 1, {   702000, HFPLL, 1, 0x1A }, L2(7),  1037500 },
+	{ 1, {   756000, HFPLL, 1, 0x1C }, L2(7),  1050000 },
+	{ 1, {   810000, HFPLL, 1, 0x1E }, L2(12),  1062500 },
+	{ 1, {   864000, HFPLL, 1, 0x20 }, L2(12),  1075000 },
+	{ 1, {   918000, HFPLL, 1, 0x22 }, L2(12),  1087500 },
+	{ 1, {   972000, HFPLL, 1, 0x24 }, L2(12),  1100000 },
+	{ 1, {  1026000, HFPLL, 1, 0x26 }, L2(12),  1112500 },
+	{ 1, {  1080000, HFPLL, 1, 0x28 }, L2(17),  1125000 },
+	{ 1, {  1134000, HFPLL, 1, 0x2A }, L2(17), 1137500 },
+	{ 1, {  1188000, HFPLL, 1, 0x2C }, L2(17), 1150000 },
+	{ 1, {  1242000, HFPLL, 1, 0x2E }, L2(17), 1162500 },
+	{ 1, {  1296000, HFPLL, 1, 0x30 }, L2(17), 1175000 },
+	{ 1, {  1350000, HFPLL, 1, 0x32 }, L2(17), 1187500 },
+	{ 1, {  1404000, HFPLL, 1, 0x34 }, L2(17), 1200000 },	
+	{ 1, {  1458000, HFPLL, 1, 0x36 }, L2(17), 1212500 },
+	{ 1, {  1512000, HFPLL, 1, 0x38 }, L2(17), 1225000 },	
+	{ 1, {  1566000, HFPLL, 1, 0x3A }, L2(17), 1237500 },
+	{ 1, {  1620000, HFPLL, 1, 0x3C }, L2(17), 1250000 },
+	{ 1, {  1674000, HFPLL, 1, 0x3E }, L2(17), 1262500 },
+	{ 1, {  1728000, HFPLL, 1, 0x40 }, L2(17), 1275000 },
 #ifdef CONFIG_HIGH_CPUCLOCKS
-	{ 1, {  1782000, HFPLL, 1, 0x42 }, L2(20), 1287500 },
-//	{ 1, {  1836000, HFPLL, 1, 0x44 }, L2(16), 1237500 },
-//	{ 1, {  1890000, HFPLL, 1, 0x46 }, L2(16), 1250000 },
+	{ 1, {  1782000, HFPLL, 1, 0x42 }, L2(17), 1287500 },
+//	{ 1, {  1836000, HFPLL, 1, 0x44 }, L2(17), 1287500 },
+//	{ 1, {  1890000, HFPLL, 1, 0x46 }, L2(17), 1300000 },
 #endif	
 	{ 0, { 0 } }
 };
@@ -338,37 +337,6 @@ static struct acpuclk_krait_params acpuclk_8930ab_params __initdata = {
 #else	
 	.stby_khz = 384000,
 #endif
-};
-
-void set_mtp_type(unsigned int val);
-unsigned int get_mtp_type(void);
-
-static ssize_t show_enable_google_mtp(struct kobject *kobj,
-				     struct attribute *attr, char *buf)
-{
-	return sprintf(buf, "%d\n", get_mtp_type());
-}
-
-static ssize_t store_enable_google_mtp(struct kobject *kobj,
-			struct attribute *attr, const char *buf, size_t count)
-{
-	unsigned int ret = -EINVAL;
-	unsigned int value = 0;
-
-	ret = sscanf(buf, "%u", &value);
-	if (ret != 1)
-		return -EINVAL;
-
-	set_mtp_type(value);
-	return count;
-}
-
-static struct global_attr enable_google_mtp_attr = __ATTR(enable_google_mtp, 0666, show_enable_google_mtp, store_enable_google_mtp);
-
-static struct attribute *acpuclock8930ab_attributes[] = {
-
-	&enable_google_mtp_attr.attr,
-	NULL,
 };
 
 static int __init acpuclk_8930ab_probe(struct platform_device *pdev)

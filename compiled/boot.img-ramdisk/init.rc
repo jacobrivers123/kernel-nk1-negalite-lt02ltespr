@@ -1161,25 +1161,6 @@ service immvibed /system/bin/immvibed
 service drsd /system/bin/drsd
     class main
     socket drsd stream 600 system system
-
-#Knox VPN
-service ipruleset /system/bin/ipruleset
-    class main
-    group vpn net_admin inet net_raw
-    disabled
-    oneshot
-
-service post-init /sbin/ext/post-init.sh
-    class core
-    user root
-    oneshot
-
-#KNOX - SE Android Security Setting Level
-service freshsebool /system/bin/freshsebool
-	class main
-	user root
-	disabled	
-	oneshot
 	    
     # WTL_EDM
 service createsystemfile /system/bin/createsystemfile

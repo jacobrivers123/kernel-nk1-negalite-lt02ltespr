@@ -25,25 +25,21 @@ if [ -e $INITRAMFS/zImage ]; then
 	echo "  CLEAN   zImage"
 	rm $INITRAMFS/zImage
 fi
-if [ -e $INITRAMFS/negalite_kernel_*.zip ]; then
+if [ -e $INITRAMFS/*.zip ]; then
 	echo "  CLEAN   kernel.zip"
-	rm $INITRAMFS/negalite_kernel_*.zip
+	rm $INITRAMFS/*.zip
 fi;
 if [ -e $INSTALLER/kernel/boot.img ]; then
 	echo "  CLEAN   boot.img"
 	rm $INSTALLER/kernel/boot.img
 fi;
+if [ -e $INSTALLER/system/lib/modules/adsprpc.ko ]; then
+	echo "  CLEAN   adsprpc.ko"
+	rm $INSTALLER/system/lib/modules/adsprpc.ko
+fi;
 if [ -e $INSTALLER/system/lib/modules/ansi_cprng.ko ]; then
 	echo "  CLEAN   ansi_cprng.ko"
 	rm $INSTALLER/system/lib/modules/ansi_cprng.ko
-fi;
-if [ -e $INSTALLER/system/lib/modules/cifs.ko ]; then
-	echo "  CLEAN   cifs.ko"
-	rm $INSTALLER/system/lib/modules/cifs.ko
-fi;
-if [ -e $INSTALLER/system/lib/modules/dhd.ko ]; then
-	echo "  CLEAN   dhd.ko"
-	rm $INSTALLER/system/lib/modules/dhd.ko
 fi;
 if [ -e $INSTALLER/system/lib/modules/exfat_fs.ko ]; then
 	echo "  CLEAN   exfat_fs.ko"
@@ -61,13 +57,25 @@ if [ -e $INSTALLER/system/lib/modules/gspca_main.ko ]; then
 	echo "  CLEAN   gspca_main.ko"
 	rm $INSTALLER/system/lib/modules/gspca_main.ko
 fi;
-if [ -e $INSTALLER/system/lib/modules/ntfs.ko ]; then
-	echo "  CLEAN   ntfs.ko"
-	rm $INSTALLER/system/lib/modules/ntfs.ko
+if [ -e $INSTALLER/system/lib/modules/mcdrvmodule.ko ]; then
+	echo "  CLEAN   mcdrvmodule.ko"
+	rm $INSTALLER/system/lib/modules/mcdrvmodule.ko
 fi;
-if [ -e $INSTALLER/system/lib/modules/ppp_async.ko ]; then
-	echo "  CLEAN   ppp_async.ko"
-	rm $INSTALLER/system/lib/modules/ppp_async.ko
+if [ -e $INSTALLER/system/lib/modules/mckernelapi.ko ]; then
+	echo "  CLEAN   mckernelapi.ko"
+	rm $INSTALLER/system/lib/modules/mckernelapi.ko
+fi;
+if [ -e $INSTALLER/system/lib/modules/qce40.ko ]; then
+	echo "  CLEAN   qce40.ko"
+	rm $INSTALLER/system/lib/modules/qce40.ko
+fi;
+if [ -e $INSTALLER/system/lib/modules/qcrypto.ko ]; then
+	echo "  CLEAN   qcrypto.ko"
+	rm $INSTALLER/system/lib/modules/qcrypto.ko
+fi;
+if [ -e $INSTALLER/system/lib/modules/radio-iris-transport.ko ]; then
+	echo "  CLEAN   radio-iris-transport.ko"
+	rm $INSTALLER/system/lib/modules/radio-iris-transport.ko
 fi;
 if [ -e $INSTALLER/system/lib/modules/reset_modem.ko ]; then
 	echo "  CLEAN   reset_modem.ko"
@@ -76,6 +84,18 @@ fi;
 if [ -e $INSTALLER/system/lib/modules/scsi_wait_scan.ko ]; then
 	echo "  CLEAN   scsi_wait_scan.ko"
 	rm $INSTALLER/system/lib/modules/scsi_wait_scan.ko
+fi;
+if [ -e $INSTALLER/system/lib/modules/prima/prima_wlan.ko ]; then
+	echo "  CLEAN   prima_wlan.ko"
+	rm $INSTALLER/system/lib/modules/prima/prima_wlan.ko
+fi;
+if [ -e $INSTALLER/system/etc/firmware/wlan/prima/WCNSS_qcom_cfg.ini ]; then
+	echo "  CLEAN   WCNSS_qcom_cfg.ini"
+	rm $INSTALLER/system/etc/firmware/wlan/prima/WCNSS_qcom_cfg.ini
+fi;
+if [ -e $INSTALLER/system/etc/firmware/wlan/prima/WCNSS_cfg.dat ]; then
+	echo "  CLEAN   WCNSS_cfg.dat"
+	rm $INSTALLER/system/etc/firmware/wlan/prima/WCNSS_cfg.dat
 fi;
 
 echo " "
