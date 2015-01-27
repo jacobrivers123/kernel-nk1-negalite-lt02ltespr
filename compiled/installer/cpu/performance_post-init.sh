@@ -4,7 +4,7 @@
 SELINUX="Off"
 
 # Sleep Control
-SCREEN_OFF="Off"
+SCREEN_OFF="On"
 
 # CPU Settings ( If CPU_CONTROL is set to "On" )
 CPU_AWAKE_MAX="1728000"
@@ -49,11 +49,6 @@ OND_SYNC_FREQ="1020000"
 OND_UP_THRESH_ANY_CPU_LOAD="60"
 OND_IO_BUSY="1"
 
-# FSync
-if [ -e /sys/kernel/dyn_fsync/Dyn_fsync_active ]; then
-	echo $DYN_FSYNC > /sys/kernel/dyn_fsync/Dyn_fsync_active
-fi
-
 # Intelli-Plug
 INTELLI_PLUG="On" #choices: [On, Off]
 
@@ -78,11 +73,6 @@ fi
 
 # Trinity Colors
 echo "1" > /sys/devices/virtual/sec/tsp/panel_colors
-
-# LED Control
-echo "1" > /sys/class/sec/led/led_fade
-echo "1" > /sys/class/sec/led/led_fade_charging
-echo "255" > /sys/class/sec/led/led_intensity
 
 # Intelli-Plug
 if [ $INTELLI_PLUG = "On" ]; then
@@ -126,7 +116,7 @@ echo $CPU_GOV > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor
 
 GOVERNOR=`cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor`
 
-if [ $GOVERNOR = "ondemand" ]; then
+if [ $GOVERNOR = "ondemand" ] || [ $GOVERNOR = "badass" ]; then
 	echo $OND_SAMP_RATE > /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate
 	echo $OND_UP_THRESH > /sys/devices/system/cpu/cpufreq/ondemand/up_threshold
 	echo $OND_DOWN_DIFF > /sys/devices/system/cpu/cpufreq/ondemand/down_differential
@@ -164,31 +154,19 @@ echo $LOW_POWER_AWAKE > /sys/module/rpm_resources/enable_low_power/vdd_mem
 echo 0 > /sys/module/pm_8x60/modes/cpu0/retention/idle_enabled
 echo 1 > /sys/module/pm_8x60/modes/cpu0/power_collapse/suspend_enabled
 echo 1 > /sys/module/pm_8x60/modes/cpu1/power_collapse/suspend_enabled
-echo 1 > /sys/module/pm_8x60/modes/cpu2/power_collapse/suspend_enabled
-echo 1 > /sys/module/pm_8x60/modes/cpu3/power_collapse/suspend_enabled
 echo 0 > /sys/module/pm_8x60/modes/cpu0/standalone_power_collapse/suspend_enabled
 echo 0 > /sys/module/pm_8x60/modes/cpu1/standalone_power_collapse/suspend_enabled
-echo 0 > /sys/module/pm_8x60/modes/cpu2/standalone_power_collapse/suspend_enabled
-echo 0 > /sys/module/pm_8x60/modes/cpu3/standalone_power_collapse/suspend_enabled
 echo 0 > /sys/module/pm_8x60/modes/cpu0/standalone_power_collapse/idle_enabled
 echo 0 > /sys/module/pm_8x60/modes/cpu1/standalone_power_collapse/idle_enabled
-echo 0 > /sys/module/pm_8x60/modes/cpu2/standalone_power_collapse/idle_enabled
-echo 0 > /sys/module/pm_8x60/modes/cpu3/standalone_power_collapse/idle_enabled
 echo 1 > /sys/module/pm_8x60/modes/cpu0/power_collapse/idle_enabled
 
 echo $CPU_AWAKE_MAX > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
 echo $CPU_AWAKE_MAX > /sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq
-echo $CPU_AWAKE_MAX > /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq
-echo $CPU_AWAKE_MAX > /sys/devices/system/cpu/cpu3/cpufreq/scaling_max_freq
 
 echo $CPU_AWAKE_MIN > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
 echo $CPU_AWAKE_MIN > /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq
-echo $CPU_AWAKE_MIN > /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq
-echo $CPU_AWAKE_MIN > /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq
 
 echo 1 > /sys/devices/system/cpu/cpu1/online
-echo 1 > /sys/devices/system/cpu/cpu2/online
-echo 1 > /sys/devices/system/cpu/cpu3/online
 
 if [ $SCREEN_OFF = "On" ]; then
 	(while [ 1 ]; do
@@ -196,15 +174,11 @@ if [ $SCREEN_OFF = "On" ]; then
 		
 		if [ $AWAKE = "awake" ]; then
 			echo 1 > /sys/devices/system/cpu/cpu1/online
-			echo 1 > /sys/devices/system/cpu/cpu2/online
-			echo 1 > /sys/devices/system/cpu/cpu3/online
 			#echo $CPU_AWAKE_MAX > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
-			echo $GPU_FREQ_AWAKE > /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/max_gpuclk
 			echo $LOW_POWER_AWAKE > /sys/module/rpm_resources/enable_low_power/L2_cache
-			echo $LOW_POWER_AWAKE > /sys/module/rpm_resources/enable_low_power/pxo
+			#echo $LOW_POWER_AWAKE > /sys/module/rpm_resources/enable_low_power/pxo
 			echo $LOW_POWER_AWAKE > /sys/module/rpm_resources/enable_low_power/vdd_dig
-			echo $LOW_POWER_AWAKE > /sys/module/rpm_resources/enable_low_power/vdd_mem
-			setprop wifi.supplicant_scan_interval 90
+			#echo $LOW_POWER_AWAKE > /sys/module/rpm_resources/enable_low_power/vdd_mem
 			AWAKE=
 		fi
 
@@ -212,15 +186,11 @@ if [ $SCREEN_OFF = "On" ]; then
 		
 		if [ $SLEEPING = "sleeping" ]; then	
 			echo 0 > /sys/devices/system/cpu/cpu1/online
-			echo 0 > /sys/devices/system/cpu/cpu2/online
-			echo 0 > /sys/devices/system/cpu/cpu3/online
-			#echo $CPU_SLEEP_MAX > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq	
-			echo $GPU_FREQ_SLEEP > /sys/devices/platform/kgsl-3d0.0/kgsl/kgsl-3d0/max_gpuclk	
+			#echo $CPU_SLEEP_MAX > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq		
 			echo $LOW_POWER_SLEEP > /sys/module/rpm_resources/enable_low_power/L2_cache
-			echo $LOW_POWER_SLEEP > /sys/module/rpm_resources/enable_low_power/pxo
+			#echo $LOW_POWER_SLEEP > /sys/module/rpm_resources/enable_low_power/pxo
 			echo $LOW_POWER_SLEEP > /sys/module/rpm_resources/enable_low_power/vdd_dig
-			echo $LOW_POWER_SLEEP > /sys/module/rpm_resources/enable_low_power/vdd_mem
-			setprop wifi.supplicant_scan_interval 240
+			#echo $LOW_POWER_SLEEP > /sys/module/rpm_resources/enable_low_power/vdd_mem
 			SLEEPING=
 		fi		
 	done &)

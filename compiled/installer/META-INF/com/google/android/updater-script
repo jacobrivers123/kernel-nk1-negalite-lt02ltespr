@@ -28,6 +28,7 @@ ui_print("@Installing Negalite NK1 Kernel");
 run_program("/tmp/makemodule.sh");
 package_extract_dir("kernel", "/tmp");
 package_extract_dir("system", "/system");
+symlink("/system/lib/modules/prima/prima_wlan.ko", "/system/lib/modules/wlan.ko");
 set_progress(0.400);
 set_perm(0, 0, 0777, "/tmp/boot.img");
 set_perm_recursive(0, 2000, 0755, 0644, "/system/lib/modules");
@@ -50,7 +51,6 @@ if file_getprop("/tmp/aroma-data/performance.prop","selected.0") == "1" then
 	ui_print(" ");
 	ui_print("@Installing Low Performance Settings");
 	package_extract_file("cpu/battery_post-init.sh", "/system/etc/post-init.sh");
-	set_perm(0, 0, 0755, "/system/etc/init.qcom.post_boot.sh");
 	ui_print("Done");
 	run_program("/sbin/sleep", "1");
 endif;
@@ -59,7 +59,6 @@ if file_getprop("/tmp/aroma-data/performance.prop","selected.0") == "2" then
 	ui_print(" ");
 	ui_print("@Installing Mixed Performance Settings");
 	package_extract_file("cpu/mixed_post-init.sh", "/system/etc/post-init.sh");
-	set_perm(0, 0, 0755, "/system/etc/init.qcom.post_boot.sh");
 	ui_print("Done");
 	run_program("/sbin/sleep", "1");
 endif;
@@ -68,11 +67,13 @@ if file_getprop("/tmp/aroma-data/performance.prop","selected.0") == "3" then
 	ui_print(" ");
 	ui_print("@Installing High Performance Settings");
 	package_extract_file("cpu/performance_post-init.sh", "/system/etc/post-init.sh");
-	set_perm(0, 0, 0755, "/system/etc/init.qcom.post_boot.sh");
 	ui_print("Done");
 	run_program("/sbin/sleep", "1");
 endif;
-set_perm(0, 0, 0777, "/system/etc/post-init.sh");
+
+set_perm(0, 0, 0755, "/system/etc/init.qcom.post_boot.sh");
+set_perm(0, 0, 0755, "/system/etc/post-init.sh");
+set_perm(0, 0, 0755, "/system/etc/perf-boot.sh");
 
 set_progress(0.625);
 

@@ -17,8 +17,6 @@
 #include <mach/rpm-regulator.h>
 #include <mach/msm_bus_board.h>
 #include <mach/msm_bus.h>
-#include <linux/cpufreq.h>
-#include <linux/acpuclock-defines.h>
 
 #include "mach/socinfo.h"
 #include "acpuclock.h"
