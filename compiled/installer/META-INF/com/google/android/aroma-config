@@ -72,9 +72,9 @@ selectbox(
 	"icons/performance",
 	"performance.prop",
 
-	"Low Performance","Good Performance",0,
-	"Mixed Performance","Better Performance",1,
-	"High Performance","Best Performance",0
+	"Low Performance","Best Battery - 1.67GHz",0,
+	"Mixed Performance","Mixed Battery/Performance - 1.72GHz",1,
+	"High Performance","Best Performance - 1.78GHz",0
 );
 
 ###############################

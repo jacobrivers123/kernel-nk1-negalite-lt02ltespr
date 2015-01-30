@@ -96,7 +96,6 @@ static unsigned int index;
 static unsigned int min_online_cpus = 1;
 
 static bool isEnabled = true;
-static bool EnableOverride = false;
 
 static int min_online_cpus_fn_set(const char *arg, const struct kernel_param *kp)
 {
@@ -141,7 +140,7 @@ static void hotplug_decision_work_fn(struct work_struct *work)
 #endif
 	if (!isEnabled)
 		return;
-		
+
 	online_cpus = num_online_cpus();
 	available_cpus = CPUS_AVAILABLE;
 	disable_load = DISABLE_LOAD_THRESHOLD; // * online_cpus;
@@ -211,7 +210,7 @@ static void hotplug_decision_work_fn(struct work_struct *work)
 				hotplug_flag_off = true;
 			}
 		}
-	
+
 		if (unlikely((avg_running >= ENABLE_ALL_LOAD_THRESHOLD) && (online_cpus < available_cpus))) {
 			pr_info("auto_hotplug: Onlining all CPUs, avg running: %d\n", avg_running);
 			/*
@@ -278,7 +277,7 @@ void apenable_auto_hotplug(bool state)
 {
 	unsigned int sampling_rate;
 	unsigned int online_cpus = num_online_cpus();
-	
+
 	isEnabled = state;
 	if (isEnabled)
 	{
@@ -295,18 +294,15 @@ void apenable_auto_hotplug(bool state)
 		pr_info("sampling_rate is: %d\n", jiffies_to_msecs(sampling_rate));
 #endif
 		schedule_delayed_work_on(0, &hotplug_decision_work, sampling_rate);
-		EnableOverride = true;
-		schedule_work_on(0, &hotplug_online_all_work);
 	}
 }
 
 static void __cpuinit hotplug_online_all_work_fn(struct work_struct *work)
 {
 	int cpu;
-	if (!isEnabled && !EnableOverride)
+	if (!isEnabled)
 		return;
-	EnableOverride = false;
-	
+
 	for_each_possible_cpu(cpu) {
 		if (likely(!cpu_online(cpu)) && (cpu)) {
 			cpu_up(cpu);

@@ -999,11 +999,6 @@ static struct dcvs_core *msm_dcvs_get_core(int offset)
 	return &core_list[offset];
 }
 
-void reset_num_cpu_freqs(void)
-{
-  num_cpu_freqs  = 0;
-}
-
 void msm_dcvs_register_cpu_freq(uint32_t freq, uint32_t voltage)
 {
 	BUG_ON(freq == 0 || voltage == 0 ||
@@ -1031,9 +1026,6 @@ int msm_dcvs_register_core(
 	struct dcvs_core *core = NULL;
 	uint32_t ret1;
 	uint32_t ret2;
-
-	if (!msm_dcvs_enabled)
-		return ret;
 
 	offset = get_core_offset(type, type_core_num);
 	if (offset < 0)
@@ -1286,9 +1278,6 @@ static int __init msm_dcvs_late_init(void)
 	struct kobject *module_kobj = NULL;
 	int ret = 0;
 
-	if (!msm_dcvs_enabled)
-		return ret;
-
 	module_kobj = kset_find_obj(module_kset, KBUILD_MODNAME);
 	if (!module_kobj) {
 		pr_err("%s: cannot find kobject for module %s\n",
@@ -1355,7 +1344,6 @@ static int __init msm_dcvs_early_init(void)
 	ret = msm_dcvs_scm_init(SZ_32K);
 	if (ret) {
 		__err("Unable to initialize DCVS err=%d\n", ret);
-		msm_dcvs_enabled = 0;
 		goto done;
 	}
 

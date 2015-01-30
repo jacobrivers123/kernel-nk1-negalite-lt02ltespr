@@ -62,7 +62,7 @@ static DEFINE_PER_CPU(struct cpu_freq, cpu_freq_info);
 
 
 #ifdef CONFIG_SEC_DVFS
-static unsigned int upper_limit_freq = 1566000;
+static unsigned int upper_limit_freq = 1728000;
 static unsigned int lower_limit_freq;
 static unsigned int cpuinfo_max_freq;
 static unsigned int cpuinfo_min_freq;
@@ -370,8 +370,8 @@ static int __cpuinit msm_cpufreq_init(struct cpufreq_policy *policy)
 #endif
 
 #ifdef CONFIG_SEC_DVFS
-	cpuinfo_max_freq = GLOBAL_MAX_FREQ_LIMIT; //policy->cpuinfo.max_freq;
-	cpuinfo_min_freq = GLOBAL_MIN_FREQ_LIMIT; //policy->cpuinfo.min_freq;
+	cpuinfo_max_freq = policy->cpuinfo.max_freq;
+	cpuinfo_min_freq = policy->cpuinfo.min_freq;
 #endif
 
 	cur_freq = acpuclk_get_rate(policy->cpu);
