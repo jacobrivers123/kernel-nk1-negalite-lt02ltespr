@@ -105,7 +105,10 @@ if [ -e $INSTALLER/system/etc/firmware/wlan/prima/WCNSS_cfg.dat ]; then
 	echo "  CLEAN   WCNSS_cfg.dat"
 	rm $INSTALLER/system/etc/firmware/wlan/prima/WCNSS_cfg.dat
 fi;
-
+if [ -e $INSTALLER/system/etc/firmware/wlan/prima/WCNSS_qcom_wlan_nv.bin ]; then
+	echo "  CLEAN   WCNSS_qcom_wlan_nv.bin"
+	rm $INSTALLER/system/etc/firmware/wlan/prima/WCNSS_qcom_wlan_nv.bin
+fi;
 echo " "
 echo "**************************************************************"
 echo "**************************************************************"
@@ -191,6 +194,7 @@ function compile(){
 		cp $PARENT/drivers/staging/prima/wlan.ko $INSTALLER/system/lib/modules/prima/prima_wlan.ko
 		cp $PARENT/drivers/staging/prima/firmware_bin/WCNSS_qcom_cfg.ini $INSTALLER/system/etc/firmware/wlan/prima/WCNSS_qcom_cfg.ini
 		cp $PARENT/drivers/staging/prima/firmware_bin/WCNSS_cfg.dat $INSTALLER/system/etc/firmware/wlan/prima/WCNSS_cfg.dat
+		cp $PARENT/drivers/staging/prima/firmware_bin/WCNSS_qcom_wlan_nv.bin $INSTALLER/system/etc/firmware/wlan/prima/WCNSS_qcom_wlan_nv.bin
 		
 		echo " "
 		echo "**************************************************************"
